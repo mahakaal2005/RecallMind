@@ -52,19 +52,19 @@ Every unfinished endpoint returns **501 "not implemented yet (owner: X)"**. Repl
 **Units:** 2 (CRUD, routing, validation middleware), 3 (document design), 4 (Mongoose CRUD, filter/sort/paginate, text index)
 
 ### Backend: `controllers/knowledgeController.js`, `middleware/validateInput.js`, `controllers/searchController.js`, `services/searchService.js`
-- [ ] `POST /api/knowledge`: create entry, emit `EVENTS.KNOWLEDGE_ADDED` with `{ id, title, source }`, return 201
-- [ ] `GET /api/knowledge`: pagination (`page`, `limit`), sorting (`sortBy`, `order`), filters (`category`, `source` partial match with regex, `tags` comma-separated → `$in`). Return `data` + `pagination` meta
-- [ ] `GET /api/knowledge/:id`: 404 via `ApiError` if not found
-- [ ] `PUT /api/knowledge/:id`: update with `{ new: true, runValidators: true }`
-- [ ] `DELETE /api/knowledge/:id`
-- [ ] Finish `validateKnowledgeEntry`: every lesson needs `lessonText`; `sourceType` must be in `SOURCE_TYPES`; `tags` must be an array
-- [ ] `GET /api/knowledge/search?q=`: `$text` search, sort by `{ score: { $meta: 'textScore' } }`, paginated. 400 if `q` missing
+- [x] `POST /api/knowledge`: create entry, emit `EVENTS.KNOWLEDGE_ADDED` with `{ id, title, source }`, return 201
+- [x] `GET /api/knowledge`: pagination (`page`, `limit`), sorting (`sortBy`, `order`), filters (`category`, `source` partial match with regex, `tags` comma-separated → `$in`). Return `data` + `pagination` meta
+- [x] `GET /api/knowledge/:id`: 404 via `ApiError` if not found
+- [x] `PUT /api/knowledge/:id`: update with `{ new: true, runValidators: true }`
+- [x] `DELETE /api/knowledge/:id`
+- [x] Finish `validateKnowledgeEntry`: every lesson needs `lessonText`; `sourceType` must be in `SOURCE_TYPES`; `tags` must be an array
+- [x] `GET /api/knowledge/search?q=`: `$text` search, sort by `{ score: { $meta: 'textScore' } }`, paginated. 400 if `q` missing
 
 ### Frontend: `Library.jsx`, `EntryForm.jsx`, `EntryDetail.jsx`, `Search.jsx`
-- [ ] Library: cards, category/source/tag filters, sort dropdown, pagination buttons
-- [ ] EntryForm: add + edit (same component; edit mode when URL has `:id`), add/remove lesson rows
-- [ ] EntryDetail: lessons with recall score, edit/delete buttons; reflections per lesson using Vansh's `GET /api/reflections/by-lesson/:lessonId`
-- [ ] Search: search box, ranked results, pagination
+- [x] Library: cards, category/source/tag filters, sort dropdown, pagination buttons
+- [x] EntryForm: add + edit (same component; edit mode when URL has `:id`), add/remove lesson rows
+- [x] EntryDetail: lessons with recall score, edit/delete buttons; reflections per lesson using Vansh's `GET /api/reflections/by-lesson/:lessonId`
+- [x] Search: search box, ranked results, pagination
 
 ### Viva prep
 Explain why lessons are **nested** in the entry (Unit 3: document model vs SQL tables), how `skip/limit` pagination works, and how a text index works.

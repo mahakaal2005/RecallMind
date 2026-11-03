@@ -1,7 +1,7 @@
 # RecallMind — Progress & Where To Continue
 
 > **Read this first in every new session.** Update it whenever something is finished.
-> Last updated: 2026-11-03
+> Last updated: 2026-11-03 (Atul slice done)
 
 ## Status in one line
 
@@ -39,8 +39,8 @@ Shared foundation is **done and verified**. All 20 feature endpoints are still *
 ## Not done (everything below is still to build)
 
 ### Owner: Atul
-- [ ] Knowledge CRUD (5 endpoints) + validation + `GET /knowledge/search`
-- [ ] Pages: Library, EntryForm, EntryDetail, Search
+- [x] Knowledge CRUD (5 endpoints) + validation + `GET /knowledge/search` (tested against a real local MongoDB)
+- [x] Pages: Library, EntryForm, EntryDetail, Search (build passes; not click-tested in a browser)
 
 ### Owner: Vansh
 - [ ] `middleware/upload.js` filter + size limit, `fileParser.js`, `POST /knowledge/upload`, `POST /knowledge/quick`
@@ -64,7 +64,7 @@ Shared foundation is **done and verified**. All 20 feature endpoints are still *
 
 - **No MongoDB tested.** `mongod` is not installed on Atul's machine. Use MongoDB Atlas (free tier) or install Community Server. Put the URI in `server/.env`. Until then `npm run seed` and `/api/health` `"db": "connected"` are unverified.
 - **Frontend is not in the PRD** (it says backend-only). Confirm with the instructor; the backend stands alone via Postman if the UI is not allowed.
-- No git repo yet (`git init` + GitHub remote needed before the branch workflow in TASKS.md).
+- Repo: github.com/mahakaal2005/RecallMind (private). Vansh and Rajan start from `docs/TEAMMATE-HANDOFF.md`; collaborators not added yet.
 - `server/.env` was created from `.env.example` locally and is gitignored.
 - Windows quirk: the shell tool mangles nested heredocs/apostrophes; write files with the Write tool.
 

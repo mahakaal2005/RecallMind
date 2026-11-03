@@ -3,7 +3,7 @@ const knowledge = require('../controllers/knowledgeController'); // Atul
 const ingest = require('../controllers/uploadController');      // Vansh
 const search = require('../controllers/searchController');      // Atul
 const retrieve = require('../controllers/retrieveController');  // Rajan
-const { validateKnowledgeEntry } = require('../middleware/validateInput');
+const { validateKnowledgeEntry, validateKnowledgeUpdate } = require('../middleware/validateInput');
 const upload = require('../middleware/upload');
 
 const router = express.Router();
@@ -20,7 +20,7 @@ router.route('/')
 
 router.route('/:id')
   .get(knowledge.getEntryById)
-  .put(knowledge.updateEntry)
+  .put(validateKnowledgeUpdate, knowledge.updateEntry)
   .delete(knowledge.deleteEntry);
 
 module.exports = router;
