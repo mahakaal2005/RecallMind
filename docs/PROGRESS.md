@@ -1,11 +1,11 @@
 # RecallMind — Progress & Where To Continue
 
 > **Read this first in every new session.** Update it whenever something is finished.
-> Last updated: 2026-11-13 (Vansh server slice done)
+> Last updated: 2026-11-13 (Rajan server & client slices done)
 
 ## Status in one line
 
-Shared foundation is **done and verified**. All 20 feature endpoints are still **501 placeholders**. Nothing has been tested against a real MongoDB yet. Team of 3 (Atul, Vansh, Rajan) is ready to start building feature slices.
+All three feature slices (Atul: Knowledge CRUD & search, Vansh: Ingestion, activity, system & reflections, Rajan: Recall quiz, stats & situational retrieval) are **fully implemented end-to-end** across server routes, controllers, services, and React client pages.
 
 ## Done
 
@@ -36,7 +36,7 @@ Shared foundation is **done and verified**. All 20 feature endpoints are still *
 - [x] 10 placeholder pages with TODO lists: Library, EntryForm, EntryDetail, Upload, Quiz, Stats, Search, Help, Journal, Activity
 - [x] Base styles with light/dark CSS variables
 
-## Not done (everything below is still to build)
+## Feature Implementation
 
 ### Owner: Atul
 - [x] Knowledge CRUD (5 endpoints) + validation + `GET /knowledge/search` (tested against a real local MongoDB)
@@ -50,13 +50,14 @@ Shared foundation is **done and verified**. All 20 feature endpoints are still *
 - [x] Pages: Upload, Activity, Journal (lint/build pass; client wired to all Vansh endpoints)
 
 ### Owner: Rajan
-- [ ] `recallEngine.js` + 4 quiz endpoints (generate, submit, history, stats)
-- [ ] `retrieveService.js` + `POST /knowledge/retrieve`
-- [ ] Pages: Quiz, Stats, Help
+- [x] `recallEngine.js` + 4 quiz endpoints (generate, submit, history, stats)
+- [x] `retrieveService.js` + `POST /knowledge/retrieve`
+- [x] Pages: Quiz, Stats, Help
+- [x] Documentation & Postman: `docs/API.md` and `docs/RecallMind.postman_collection.json` updated with Rajan's endpoints
 
 ### Shared / final
-- [ ] Postman collection (`docs/RecallMind.postman_collection.json`)
-- [ ] `docs/API.md`
+- [x] Postman collection (`docs/RecallMind.postman_collection.json`)
+- [x] `docs/API.md`
 - [ ] Integration pass (EntryDetail ↔ reflections, Help → Journal link, events from every feature)
 - [ ] Demo rehearsal + viva prep
 

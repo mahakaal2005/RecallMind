@@ -127,6 +127,87 @@
           }
         }
       ]
+    },
+    {
+      "name": "Rajan",
+      "item": [
+        {
+          "name": "Generate Quiz (standard)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/quiz/generate?count=5"
+          }
+        },
+        {
+          "name": "Generate Quiz with category",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/quiz/generate?category=habits&count=3"
+          }
+        },
+        {
+          "name": "Submit Quiz",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/quiz/REPLACE_WITH_QUIZ_ID/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    {\n      \"questionId\": \"REPLACE_WITH_QUESTION_ID\",\n      \"userAnswer\": \"I remembered the 2-minute rule\",\n      \"remembered\": true\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit Quiz already submitted (error)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/quiz/REPLACE_WITH_QUIZ_ID/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    {\n      \"questionId\": \"REPLACE_WITH_QUESTION_ID\",\n      \"userAnswer\": \"Attempt again\",\n      \"remembered\": true\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Quiz History",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/quiz/history?page=1&limit=5"
+          }
+        },
+        {
+          "name": "Quiz Recall Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/quiz/stats"
+          }
+        },
+        {
+          "name": "Situational Retrieve (Help me with...)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/knowledge/retrieve",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"problem\": \"I keep procrastinating and can't start my study session\",\n  \"limit\": 5\n}"
+            }
+          }
+        },
+        {
+          "name": "Situational Retrieve missing problem (error)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/knowledge/retrieve",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limit\": 5\n}"
+            }
+          }
+        }
+      ]
     }
   ],
   "variable": [

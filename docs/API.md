@@ -84,4 +84,111 @@ POST /api/reflections
 
 ## Quiz, stats, retrieve (Rajan)
 
-_To be added by Rajan._
+### Quiz & Spaced Repetition
+
+| Method | URL | Notes |
+|---|---|---|
+| GET | `/quiz/generate` | Query: `category` (optional, filter by category), `count` (optional, default 5, min 1, max 20). Selects weakest and least recently tested lessons, shuffles top pool, creates a `Quiz` document. Returns questions **without** the answers (prompt and hint only). → 201 |
+| POST | `/quiz/:quizId/submit` | Body: `{ answers: [{ questionId, userAnswer, remembered }] }`. Calculates quiz score percentage, sets `completedAt`, uses positional update `KnowledgeEntry.updateOne` to update `recallScore` (+20 if remembered, -15 if forgot, clamped 0–100), `lastTestedAt`, and increments `timesRecalled` or `timesForgotten`. Returns full questions with real `lessonText` revealed. Emits `quiz:completed`. Rejects resubmission of already submitted quiz (400). → 200 |
+| GET | `/quiz/history` | Query: `page`, `limit`. Returns list of past completed quizzes sorted newest first (`completedAt` desc) with populated entry titles and sources. Paginated. → 200 |
+| GET | `/quiz/stats` | Aggregation pipeline: total lessons stored, average recall score across all lessons, never-tested lessons count, weakest 3 categories by average recall, and daily quiz streak. → 200 |
+
+### Situational Retrieval ("Help Me With...")
+
+| Method | URL | Notes |
+|---|---|---|
+| POST | `/knowledge/retrieve` | Body: `{ problem: "string", limit?: number }`. Performs MongoDB `$text` search with `$meta: "textScore"`, word-frequency matching across `lessonText` and `context`, and ranks lessons by composite relevance. Returns top matching lessons with `entryId`, `lessonId`, `title`, `source`, `category`, `lessonText`, `context`, and `relevanceScore`. Returns friendly 200 response if no matches. 400 if problem is missing. → 200 |
+
+Example Generate Quiz:
+```
+GET /api/quiz/generate?category=habits&count=3
+→ 201 {
+  "success": true,
+  "message": "Quiz generated successfully",
+  "data": {
+    "quizId": "654e12...",
+    "category": "habits",
+    "questions": [
+      {
+        "questionId": "654e12...",
+        "entryRef": "654e11...",
+        "lessonId": "654e10...",
+        "prompt": "From \"Atomic Habits\" (James Clear), recall this lesson:",
+        "hint": "Context: Habit stacking"
+      }
+    ]
+  }
+}
+```
+
+Example Submit Quiz:
+```
+POST /api/quiz/654e12.../submit
+{
+  "answers": [
+    { "questionId": "654e12...", "userAnswer": "Make it obvious", "remembered": true }
+  ]
+}
+→ 200 {
+  "success": true,
+  "message": "Quiz submitted successfully",
+  "data": {
+    "quizId": "654e12...",
+    "score": 100,
+    "total": 1,
+    "rememberedCount": 1,
+    "completedAt": "2026-11-13T16:30:00.000Z",
+    "questions": [
+      {
+        "questionId": "654e12...",
+        "prompt": "...",
+        "userAnswer": "Make it obvious",
+        "remembered": true,
+        "lessonText": "Make it obvious, easy, attractive, satisfying",
+        "newRecallScore": 20
+      }
+    ]
+  }
+}
+```
+
+Example Stats:
+```
+GET /api/quiz/stats
+→ 200 {
+  "success": true,
+  "message": "Quiz stats retrieved",
+  "data": {
+    "totalLessons": 15,
+    "averageRecall": 42,
+    "neverTestedCount": 6,
+    "weakestCategories": [
+      { "category": "habits", "avgRecall": 20, "lessonCount": 4 }
+    ],
+    "streak": 3,
+    "totalQuizzesCompleted": 5
+  }
+}
+```
+
+Example Situational Retrieval:
+```
+POST /api/knowledge/retrieve
+{ "problem": "I keep procrastinating on my project", "limit": 3 }
+→ 200 {
+  "success": true,
+  "message": "Found 3 relevant lesson(s) to help with your situation",
+  "data": [
+    {
+      "entryId": "...",
+      "lessonId": "...",
+      "title": "Atomic Habits",
+      "source": "James Clear",
+      "category": "habits",
+      "lessonText": "The 2-minute rule helps overcome friction to get started",
+      "context": "Starting is often harder than continuing",
+      "relevanceScore": 12.5
+    }
+  ]
+}
+```
