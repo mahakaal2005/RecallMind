@@ -1,7 +1,7 @@
 # RecallMind — Progress & Where To Continue
 
 > **Read this first in every new session.** Update it whenever something is finished.
-> Last updated: 2026-11-03 (Atul slice done)
+> Last updated: 2026-11-13 (Vansh server slice done)
 
 ## Status in one line
 
@@ -43,11 +43,11 @@ Shared foundation is **done and verified**. All 20 feature endpoints are still *
 - [x] Pages: Library, EntryForm, EntryDetail, Search (build passes; not click-tested in a browser)
 
 ### Owner: Vansh
-- [ ] `middleware/upload.js` filter + size limit, `fileParser.js`, `POST /knowledge/upload`, `POST /knowledge/quick`
-- [ ] `eventHandlers.js` for all 4 events (file + ActivityLog collection)
-- [ ] `GET /activity/log`, `GET /activity/summary`, `GET /system/info`
-- [ ] Reflections: 4 endpoints
-- [ ] Pages: Upload, Activity, Journal
+- [x] `middleware/upload.js` filter + size limit, `fileParser.js`, `POST /knowledge/upload`, `POST /knowledge/quick`
+- [x] `eventHandlers.js` for all 4 events (file + ActivityLog collection)
+- [x] `GET /activity/log`, `GET /activity/summary`, `GET /system/info`
+- [x] Reflections: 4 endpoints
+- [x] Pages: Upload, Activity, Journal (lint/build pass; client wired to all Vansh endpoints)
 
 ### Owner: Rajan
 - [ ] `recallEngine.js` + 4 quiz endpoints (generate, submit, history, stats)

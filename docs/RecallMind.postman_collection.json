@@ -1,0 +1,135 @@
+{
+  "info": {
+    "name": "RecallMind",
+    "_postman_id": "recallmind-collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Vansh",
+      "item": [
+        {
+          "name": "Upload valid .md file",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{base}}/knowledge/upload",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "server/scripts/sample-notes.md" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload invalid extension (error)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{base}}/knowledge/upload",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "server/package.json" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Quick capture",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/knowledge/quick",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"lessonText\": \"Active recall beats re-reading for long-term memory\", \"source\": \"Huberman Lab Podcast\", \"category\": \"learning\" }"
+            }
+          }
+        },
+        {
+          "name": "Quick capture missing field (error)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/knowledge/quick",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"source\": \"Test\" }"
+            }
+          }
+        },
+        {
+          "name": "Activity log (last 20 lines)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/activity/log?lines=20"
+          }
+        },
+        {
+          "name": "Activity summary",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/activity/summary"
+          }
+        },
+        {
+          "name": "System info",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/system/info"
+          }
+        },
+        {
+          "name": "Create reflection",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/reflections",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"text\": \"Applied the 2-minute rule today and it worked!\", \"mood\": \"proud\", \"linkedLessons\": [{ \"knowledgeEntryId\": \"REPLACE_WITH_ENTRY_ID\", \"lessonId\": \"REPLACE_WITH_LESSON_ID\" }] }"
+            }
+          }
+        },
+        {
+          "name": "Create reflection bad mood (error)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/reflections",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"text\": \"Test\", \"mood\": \"happy\" }"
+            }
+          }
+        },
+        {
+          "name": "List reflections (mood filter)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/reflections?mood=proud&page=1&limit=10"
+          }
+        },
+        {
+          "name": "Reflections by lesson",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/reflections/by-lesson/REPLACE_WITH_LESSON_ID"
+          }
+        },
+        {
+          "name": "Delete reflection",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base}}/reflections/REPLACE_WITH_REFLECTION_ID"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "base", "value": "http://localhost:5000/api" }
+  ]
+}
