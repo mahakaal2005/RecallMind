@@ -105,18 +105,18 @@ Stream vs `readFile` (memory), what a Buffer is, how EventEmitter decouples logg
 **Units:** 2 (REST design), 4 (aggregation pipeline, nested array updates, `$text` + `$meta`, query operators)
 
 ### Backend: `services/recallEngine.js`, `controllers/quizController.js`, `controllers/retrieveController.js`, `services/retrieveService.js`
-- [ ] `selectLessonsForQuiz(count, category)`: aggregation `$match` → `$unwind: '$lessons'` → `$sort` by `lessons.recallScore` asc then `lessons.lastTestedAt` asc (never-tested first) → `$limit`. Add a little randomness so the same quiz doesn't repeat (e.g. take top `count*2`, shuffle, pick `count`)
-- [ ] `GET /api/quiz/generate?category=&count=5`: save a `Quiz` doc with questions (`entryRef`, `lessonId`, `prompt`, `hint`). Return questions **without** the answer text
-- [ ] `POST /api/quiz/:quizId/submit`: body `{ answers: [{ questionId, userAnswer, remembered }] }`. Update each lesson with positional update `KnowledgeEntry.updateOne({ _id, 'lessons._id': lessonId }, { $inc, $set })` using `RECALL` constants and clamping. Set quiz `score` + `completedAt`. Emit `QUIZ_COMPLETED` `{ quizId, score, total }`. Return the real lesson text for the reveal
-- [ ] Reject submitting the same quiz twice (400)
-- [ ] `GET /api/quiz/history`: completed quizzes, paginated, newest first
-- [ ] `GET /api/quiz/stats` (aggregation): total lessons, average recall, weakest 3 categories (`$group` by category, avg score), never-tested count (`lastTestedAt` missing), streak (consecutive days with a completed quiz, from `completedAt`)
-- [ ] `POST /api/knowledge/retrieve` body `{ problem, limit? }`: aggregation `$match $text` → `$addFields { score: { $meta: 'textScore' } }` → `$unwind lessons` → rank each lesson (count words of `problem` found in `lessonText` + `context`, combine with score) → top N lessons with `entryId`, `lessonId`, `source`, `title`. Return a friendly message when nothing matches
+- [x] `selectLessonsForQuiz(count, category)`: aggregation `$match` → `$unwind: '$lessons'` → `$sort` by `lessons.recallScore` asc then `lessons.lastTestedAt` asc (never-tested first) → `$limit`. Add a little randomness so the same quiz doesn't repeat (e.g. take top `count*2`, shuffle, pick `count`)
+- [x] `GET /api/quiz/generate?category=&count=5`: save a `Quiz` doc with questions (`entryRef`, `lessonId`, `prompt`, `hint`). Return questions **without** the answer text
+- [x] `POST /api/quiz/:quizId/submit`: body `{ answers: [{ questionId, userAnswer, remembered }] }`. Update each lesson with positional update `KnowledgeEntry.updateOne({ _id, 'lessons._id': lessonId }, { $inc, $set })` using `RECALL` constants and clamping. Set quiz `score` + `completedAt`. Emit `QUIZ_COMPLETED` `{ quizId, score, total }`. Return the real lesson text for the reveal
+- [x] Reject submitting the same quiz twice (400)
+- [x] `GET /api/quiz/history`: completed quizzes, paginated, newest first
+- [x] `GET /api/quiz/stats` (aggregation): total lessons, average recall, weakest 3 categories (`$group` by category, avg score), never-tested count (`lastTestedAt` missing), streak (consecutive days with a completed quiz, from `completedAt`)
+- [x] `POST /api/knowledge/retrieve` body `{ problem, limit? }`: aggregation `$match $text` → `$addFields { score: { $meta: 'textScore' } }` → `$unwind lessons` → rank each lesson (count words of `problem` found in `lessonText` + `context`, combine with score) → top N lessons with `entryId`, `lessonId`, `source`, `title`. Return a friendly message when nothing matches
 
 ### Frontend: `Quiz.jsx`, `Stats.jsx`, `Help.jsx`
-- [ ] Quiz flow: setup (category, count) → one question at a time → type answer → **Reveal** shows real lesson → *Remembered* / *Forgot* → final score screen
-- [ ] Stats: stat tiles + weakest categories (simple CSS bars are fine)
-- [ ] Help: problem textarea → ranked lessons; "Write a reflection" button per lesson links to `/journal` (agree on the query-param format with Vansh)
+- [x] Quiz flow: setup (category, count) → one question at a time → type answer → **Reveal** shows real lesson → *Remembered* / *Forgot* → final score screen
+- [x] Stats: stat tiles + weakest categories (simple CSS bars are fine)
+- [x] Help: problem textarea → ranked lessons; "Write a reflection" button per lesson links to `/journal` (agree on the query-param format with Vansh)
 
 ### Viva prep
 Walk through the aggregation pipelines stage by stage; explain the positional `$` operator for updating a nested lesson and how `$meta: "textScore"` ranks results.
