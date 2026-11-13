@@ -47,7 +47,7 @@ Shared foundation is **done and verified**. All 20 feature endpoints are still *
 - [x] `eventHandlers.js` for all 4 events (file + ActivityLog collection)
 - [x] `GET /activity/log`, `GET /activity/summary`, `GET /system/info`
 - [x] Reflections: 4 endpoints
-- [ ] Pages: Upload, Activity, Journal
+- [x] Pages: Upload, Activity, Journal (lint/build pass; client wired to all Vansh endpoints)
 
 ### Owner: Rajan
 - [ ] `recallEngine.js` + 4 quiz endpoints (generate, submit, history, stats)

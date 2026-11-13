@@ -91,9 +91,9 @@ Explain why lessons are **nested** in the entry (Unit 3: document model vs SQL t
 - [x] `DELETE /api/reflections/:id`
 
 ### Frontend: `Upload.jsx`, `Activity.jsx`, `Journal.jsx`
-- [ ] Upload: file picker + result (title, lessons parsed); quick capture form on the same page
-- [ ] Activity: recent log lines, summary counts, system info card
-- [ ] Journal: write form (text, mood, pick lessons), list with mood filter + pagination, delete
+- [x] Upload: file picker + result (title, lessons parsed); quick capture form on the same page
+- [x] Activity: recent log lines, summary counts, system info card
+- [x] Journal: write form (text, mood, pick lessons), list with mood filter + pagination, delete
 
 ### Viva prep
 Stream vs `readFile` (memory), what a Buffer is, how EventEmitter decouples logging from controllers, why reflections **reference** lessons instead of embedding them, what `populate` does.
