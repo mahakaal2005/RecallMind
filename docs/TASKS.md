@@ -76,19 +76,19 @@ Explain why lessons are **nested** in the entry (Unit 3: document model vs SQL t
 **Units:** 1 (fs, streams, buffers, events, OS module), 2 (multer middleware, CRUD), 3 (references vs embedding), 4 (references, populate, aggregation)
 
 ### Backend: `controllers/uploadController.js`, `services/fileParser.js`, `middleware/upload.js`, `events/eventHandlers.js`, `controllers/activityController.js`, `controllers/systemController.js` (`getSystemInfo` only), `controllers/reflectionController.js`
-- [ ] `middleware/upload.js`: allow only `.txt` / `.md`, 2 MB limit
-- [ ] `fileParser.js`: `fs.createReadStream` + `readline`. `# Heading` → title, `Source:` / `Category:` lines → fields, `- ` / `* ` lines → lessons. Test with `server/scripts/sample-notes.md`
-- [ ] `POST /api/knowledge/upload`: parse → create entry with `importedFromFile: true` → `fs.unlink` the temp file → emit `FILE_UPLOADED` + `KNOWLEDGE_ADDED`
-- [ ] `POST /api/knowledge/quick`: `{ lessonText, source, category? }` → entry with one lesson (category default `"uncategorized"`)
-- [ ] `eventHandlers.js`: handle **all 4 events**: `fs.appendFile` to `logs/activity.log` and save to the `ActivityLog` collection
-- [ ] `GET /api/activity/log?lines=50`: read file, return last N lines (handle "file doesn't exist yet")
-- [ ] `GET /api/activity/summary`: aggregation: count per `eventType`, count per day for the last 7 days
-- [ ] `GET /api/system/info`: OS module (PRD §8.4)
-- [ ] Show **Buffer** use somewhere you can explain, e.g. read the first bytes of the upload to reject binary files, or report `Buffer.byteLength` of the file
-- [ ] `POST /api/reflections`: validate `text`, `mood` in `MOODS`; `linkedLessons` must point at a real entry + lesson. Emit `REFLECTION_ADDED` `{ id, mood, linkedCount }`
-- [ ] `GET /api/reflections`: paginated, `order`, filter by `mood`; `populate('linkedLessons.knowledgeEntryId', 'title source')`
-- [ ] `GET /api/reflections/by-lesson/:lessonId`: query `{ 'linkedLessons.lessonId': lessonId }`
-- [ ] `DELETE /api/reflections/:id`
+- [x] `middleware/upload.js`: allow only `.txt` / `.md`, 2 MB limit
+- [x] `fileParser.js`: `fs.createReadStream` + `readline`. `# Heading` → title, `Source:` / `Category:` lines → fields, `- ` / `* ` lines → lessons. Test with `server/scripts/sample-notes.md`
+- [x] `POST /api/knowledge/upload`: parse → create entry with `importedFromFile: true` → `fs.unlink` the temp file → emit `FILE_UPLOADED` + `KNOWLEDGE_ADDED`
+- [x] `POST /api/knowledge/quick`: `{ lessonText, source, category? }` → entry with one lesson (category default `"uncategorized"`)
+- [x] `eventHandlers.js`: handle **all 4 events**: `fs.appendFile` to `logs/activity.log` and save to the `ActivityLog` collection
+- [x] `GET /api/activity/log?lines=50`: read file, return last N lines (handle "file doesn't exist yet")
+- [x] `GET /api/activity/summary`: aggregation: count per `eventType`, count per day for the last 7 days
+- [x] `GET /api/system/info`: OS module (PRD §8.4)
+- [x] Show **Buffer** use somewhere you can explain, e.g. read the first bytes of the upload to reject binary files, or report `Buffer.byteLength` of the file
+- [x] `POST /api/reflections`: validate `text`, `mood` in `MOODS`; `linkedLessons` must point at a real entry + lesson. Emit `REFLECTION_ADDED` `{ id, mood, linkedCount }`
+- [x] `GET /api/reflections`: paginated, `order`, filter by `mood`; `populate('linkedLessons.knowledgeEntryId', 'title source')`
+- [x] `GET /api/reflections/by-lesson/:lessonId`: query `{ 'linkedLessons.lessonId': lessonId }`
+- [x] `DELETE /api/reflections/:id`
 
 ### Frontend: `Upload.jsx`, `Activity.jsx`, `Journal.jsx`
 - [ ] Upload: file picker + result (title, lessons parsed); quick capture form on the same page
