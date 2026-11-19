@@ -7,12 +7,13 @@
 const multer = require('multer');
 const path = require('path');
 const { ApiError } = require('../utils/apiResponse');
+const { UPLOAD_DIR } = require('../utils/paths');
 
 const ALLOWED_EXT = new Set(['.txt', '.md']);
 const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
 
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, '../uploads'),
+  destination: UPLOAD_DIR,
   filename: (_req, file, cb) => {
     // Unique name to avoid collisions
     cb(null, `${Date.now()}-${file.originalname}`);

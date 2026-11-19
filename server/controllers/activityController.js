@@ -7,7 +7,9 @@ const asyncHandler = require('../middleware/asyncHandler');
 const ActivityLog = require('../models/ActivityLog');
 const { sendSuccess } = require('../utils/apiResponse');
 
-const LOG_FILE = path.join(__dirname, '../logs/activity.log');
+const { LOG_DIR } = require('../utils/paths');
+
+const LOG_FILE = path.join(LOG_DIR, 'activity.log');
 
 // GET /api/activity/log?lines=50
 exports.getActivityLog = asyncHandler(async (req, res) => {

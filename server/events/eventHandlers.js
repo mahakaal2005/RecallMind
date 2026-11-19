@@ -13,11 +13,9 @@ const appEvents = require('./appEvents');
 const { EVENTS } = require('../utils/constants');
 const ActivityLog = require('../models/ActivityLog');
 
-const LOG_DIR = path.join(__dirname, '../logs');
+// LOG_DIR is created (fs.mkdirSync) in utils/paths.js; it is os.tmpdir()/logs on Vercel
+const { LOG_DIR } = require('../utils/paths');
 const LOG_FILE = path.join(LOG_DIR, 'activity.log');
-
-// Ensure logs directory exists once at startup (Unit 1: fs.mkdirSync)
-fs.mkdirSync(LOG_DIR, { recursive: true });
 
 // Map raw event name to uppercase label for the log file
 const labelOf = (eventType) => eventType.replace(/:/g, '_').toUpperCase();

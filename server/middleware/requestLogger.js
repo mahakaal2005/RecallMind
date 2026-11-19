@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const { LOG_DIR } = require('../utils/paths');
 
-const LOG_FILE = path.join(__dirname, '../logs/requests.log');
+const LOG_FILE = path.join(LOG_DIR, 'requests.log');
 
 // Logs every request (method, path, status, duration) to logs/requests.log
 const requestLogger = (req, res, next) => {

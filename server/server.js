@@ -15,6 +15,16 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
+// Serverless (Vercel imports this file instead of running it): connect on first request and reuse the connection.
+const isMain = require.main === module;
+let dbReady;
+if (!isMain) {
+  app.use((_req, _res, next) => {
+    dbReady = dbReady || connectDB();
+    dbReady.then(() => next(), (err) => { dbReady = null; next(err); });
+  });
+}
+
 // ---------- Routes ----------
 app.use('/api', require('./routes/systemRoutes'));
 app.use('/api/knowledge', require('./routes/knowledgeRoutes'));
@@ -30,6 +40,13 @@ app.use((req, res) => {
 // Error handler must be registered last
 app.use(errorHandler);
 
-connectDB().then(() => {
-  app.listen(PORT, () => console.log(`RecallMind API running on http://localhost:${PORT}`));
-});
+if (isMain) {
+  connectDB()
+    .then(() => app.listen(PORT, () => console.log(`RecallMind API running on http://localhost:${PORT}`)))
+    .catch((err) => {
+      console.error('MongoDB connection failed:', err.message);
+      process.exit(1);
+    });
+}
+
+module.exports = app;
