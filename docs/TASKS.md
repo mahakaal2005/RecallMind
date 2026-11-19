@@ -125,10 +125,10 @@ Walk through the aggregation pipelines stage by stage; explain the positional `$
 
 ## Shared tasks (everyone)
 
-- [ ] Add your endpoints to the Postman collection `docs/RecallMind.postman_collection.json` (one folder per member, example body + saved example response)
-- [ ] Write your section of `docs/API.md`: method, URL, query/body params, example response
-- [ ] Test the **error cases** of your endpoints: bad id, missing field, empty DB
-- [ ] Use `asyncHandler` + `sendSuccess` / `ApiError` everywhere so responses look the same
+- [x] Add your endpoints to the Postman collection `docs/RecallMind.postman_collection.json` (one folder per member, example body + saved example response)
+- [x] Write your section of `docs/API.md`: method, URL, query/body params, example response
+- [x] Test the **error cases** of your endpoints: bad id, missing field, empty DB
+- [x] Use `asyncHandler` + `sendSuccess` / `ApiError` everywhere so responses look the same
 - [ ] Prepare 2 minutes of the demo for your feature
 - [ ] Tick your boxes in this file and update [PROGRESS.md](./PROGRESS.md) when you merge
 
@@ -161,8 +161,8 @@ Emit from your controller with `appEvents.emit(EVENTS.X, payload)`. Vansh writes
 
 ## Definition of done (per task)
 
-- [ ] Works in Postman, including at least one error case
-- [ ] Returns the standard `{ success, message, data }` / `{ success, error }` shape
+- [x] Works in Postman, including at least one error case
+- [x] Returns the standard `{ success, message, data }` / `{ success, error }` shape
 - [ ] UI page uses the real API and shows loading + error states
-- [ ] No `console.log` debugging left behind
+- [x] No `console.log` debugging left behind
 - [ ] Merged to `main` and the app still starts

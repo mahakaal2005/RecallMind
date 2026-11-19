@@ -5,8 +5,11 @@
 //   await api.post('/knowledge', { title, source, category, lessons })
 //   await api.upload('/knowledge/upload', formData)
 
+// Empty in dev (Vite proxies /api). On Vercel set VITE_API_URL to the Render API origin, e.g. https://recallmind-api.onrender.com
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+
 async function request(path, options = {}) {
-  const res = await fetch(`/api${path}`, options)
+  const res = await fetch(`${API_BASE}/api${path}`, options)
   const body = await res.json().catch(() => ({}))
   if (!res.ok || body.success === false) {
     throw new Error(body.error || `Request failed (${res.status})`)

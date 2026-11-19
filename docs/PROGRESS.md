@@ -1,7 +1,7 @@
 # RecallMind — Progress & Where To Continue
 
 > **Read this first in every new session.** Update it whenever something is finished.
-> Last updated: 2026-11-13 (Rajan server & client slices done)
+> Last updated: 2026-11-19 (Atul Postman folder, local verification, deploy prep)
 
 ## Status in one line
 
@@ -56,22 +56,28 @@ All three feature slices (Atul: Knowledge CRUD & search, Vansh: Ingestion, activ
 - [x] Documentation & Postman: `docs/API.md` and `docs/RecallMind.postman_collection.json` updated with Rajan's endpoints
 
 ### Shared / final
-- [x] Postman collection (`docs/RecallMind.postman_collection.json`)
+- [x] Postman collection (`docs/RecallMind.postman_collection.json`): Atul, Vansh and Rajan folders, error cases included
 - [x] `docs/API.md`
-- [ ] Integration pass (EntryDetail ↔ reflections, Help → Journal link, events from every feature)
+- [x] Integration pass (EntryDetail ↔ reflections, Help → Journal `?entryId=&lessonId=`, events from every feature) — checked against a real MongoDB on 2026-11-19; UI not yet click-tested in a browser
 - [ ] Demo rehearsal + viva prep
 
 ## Known gaps & open questions
 
-- **No MongoDB tested.** `mongod` is not installed on Atul's machine. Use MongoDB Atlas (free tier) or install Community Server. Put the URI in `server/.env`. Until then `npm run seed` and `/api/health` `"db": "connected"` are unverified.
+- **Verified locally against a real MongoDB** (seed + ~40 requests across all three owners, 2026-11-19). Not yet verified on Atlas or on a deployed site.
 - **Frontend is not in the PRD** (it says backend-only). Confirm with the instructor; the backend stands alone via Postman if the UI is not allowed.
-- Repo: github.com/mahakaal2005/RecallMind (private). Vansh and Rajan start from `docs/TEAMMATE-HANDOFF.md`; collaborators not added yet.
-- `server/.env` was created from `.env.example` locally and is gitignored.
-- Windows quirk: the shell tool mangles nested heredocs/apostrophes; write files with the Write tool.
+- Repo: github.com/mahakaal2005/RecallMind (private).
+- `server/.env` is gitignored. Copy `.env.example` and set `MONGODB_URI`.
+- `client/node_modules` installed on Windows lacks Linux native bindings; run `npm install` again on the other OS.
+- `npm run lint` in `client/` (oxlint) printed a "JSON parse failed" error on Linux; not investigated.
+
+## Deployment plan
+
+- Client on Vercel (`client/vercel.json` rewrites to `index.html`; set `VITE_API_URL` to the API origin).
+- API on Render (`render.yaml`, free plan sleeps when idle; set `MONGODB_URI` in the dashboard). A persistent host is used so `logs/*.log` and `uploads/` keep working (Unit 1 features); Vercel functions have a read-only filesystem.
+- Database: MongoDB Atlas free (M0) cluster; allow access from `0.0.0.0/0` because Render IPs change.
 
 ## Next steps (start here)
 
-1. Get MongoDB running, set `MONGODB_URI`, run `cd server && npm run seed && npm run dev`, confirm `GET /api/health` shows `connected` and Compass shows 5 entries.
-2. `git init`, push to GitHub, share with Vansh and Rajan.
-3. Each member picks up their section in `docs/TASKS.md` (Week 1 = backend endpoints).
-4. If Claude continues the work: pick the next unchecked item above, implement it following the conventions in `CLAUDE.md`, then tick it here.
+1. Create the Atlas cluster, seed it (`MONGODB_URI=<atlas> npm run seed` wipes that DB), deploy API to Render, then the client to Vercel.
+2. Click through every page on the deployed site and fix what breaks.
+3. Demo rehearsal x2 and viva prep (see the viva notes in `docs/TASKS.md`).

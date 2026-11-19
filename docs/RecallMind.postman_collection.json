@@ -6,6 +6,268 @@
   },
   "item": [
     {
+      "name": "Atul",
+      "item": [
+        {
+          "name": "Create entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base}}/knowledge",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"title\": \"Atomic Habits\", \"source\": \"James Clear\", \"category\": \"habits\", \"sourceType\": \"book\", \"tags\": [\"focus\", \"routine\"], \"lessons\": [{ \"lessonText\": \"Make it obvious, easy, attractive, satisfying\", \"pageNumber\": 14 }] }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('entryId', pm.response.json().data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create entry missing lessonText (error)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base}}/knowledge",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"title\": \"Bad\", \"source\": \"Nobody\", \"category\": \"habits\", \"lessons\": [{ \"context\": \"no text\" }] }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create entry missing title (error)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base}}/knowledge",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"source\": \"Nobody\", \"category\": \"habits\" }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List entries (paginated)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/knowledge?page=1&limit=5"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List entries (filter + sort)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/knowledge?category=habits&source=clear&tags=focus&sortBy=title&order=asc"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get entry by id",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/knowledge/{{entryId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get entry bad id (error)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/knowledge/not-an-id"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get entry not found (error)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/knowledge/000000000000000000000000"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update entry",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base}}/knowledge/{{entryId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"title\": \"Atomic Habits (2nd read)\", \"tags\": [\"focus\"] }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search (ranked)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/knowledge/search?q=habit&page=1&limit=10"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search missing q (error)",
+          "request": {
+            "method": "GET",
+            "url": "{{base}}/knowledge/search"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete entry",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base}}/knowledge/{{entryId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Vansh",
       "item": [
         {
@@ -17,7 +279,11 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "file", "type": "file", "src": "server/scripts/sample-notes.md" }
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "server/scripts/sample-notes.md"
+                }
               ]
             }
           }
@@ -31,7 +297,11 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "file", "type": "file", "src": "server/package.json" }
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "server/package.json"
+                }
               ]
             }
           }
@@ -40,7 +310,12 @@
           "name": "Quick capture",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{base}}/knowledge/quick",
             "body": {
               "mode": "raw",
@@ -52,7 +327,12 @@
           "name": "Quick capture missing field (error)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{base}}/knowledge/quick",
             "body": {
               "mode": "raw",
@@ -85,7 +365,12 @@
           "name": "Create reflection",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{base}}/reflections",
             "body": {
               "mode": "raw",
@@ -97,7 +382,12 @@
           "name": "Create reflection bad mood (error)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{base}}/reflections",
             "body": {
               "mode": "raw",
@@ -149,7 +439,12 @@
           "name": "Submit Quiz",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{base}}/quiz/REPLACE_WITH_QUIZ_ID/submit",
             "body": {
               "mode": "raw",
@@ -161,7 +456,12 @@
           "name": "Submit Quiz already submitted (error)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{base}}/quiz/REPLACE_WITH_QUIZ_ID/submit",
             "body": {
               "mode": "raw",
@@ -187,7 +487,12 @@
           "name": "Situational Retrieve (Help me with...)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{base}}/knowledge/retrieve",
             "body": {
               "mode": "raw",
@@ -199,7 +504,12 @@
           "name": "Situational Retrieve missing problem (error)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{base}}/knowledge/retrieve",
             "body": {
               "mode": "raw",
@@ -211,6 +521,13 @@
     }
   ],
   "variable": [
-    { "key": "base", "value": "http://localhost:5000/api" }
+    {
+      "key": "base",
+      "value": "http://localhost:5000/api"
+    },
+    {
+      "key": "entryId",
+      "value": ""
+    }
   ]
 }
